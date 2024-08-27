@@ -34,6 +34,8 @@ type
     CDSItensPedTmpTotalAnt: TCurrencyField;
     DSPedRel: TDataSource;
     SDSPedRel: TSimpleDataSet;
+    DSProdMais: TDataSource;
+    SDSProdMais: TSimpleDataSet;
     procedure DSClientesStateChange(Sender: TObject);
     procedure SDSAfterPost(DataSet: TDataSet);
     procedure SDSAfterDelete(DataSet: TDataSet);

@@ -991,7 +991,7 @@ object FrmMovPed: TFrmMovPed
           DisplayFormat.Kind = fkNumeric
           Frame.Typ = [ftTop]
           Memo.UTF8W = (
-            '[SUM(<frxDBDSPed."TOTAL">,MasterData1)]')
+            '[SUM(<frxDBDSPed."TOTAL">, MDtPed)]')
         end
         object MmTitTotGer: TfrxMemoView
           Align = baRight

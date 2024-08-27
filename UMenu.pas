@@ -183,7 +183,6 @@ end;
 
 procedure TFrmMenu.FormShow(Sender: TObject);
 begin
-//  Exit; // Debug, tirar depois
   if FrmLogin.ShowModal = mrCancel then // Tela de login
     Application.Terminate;
 end;

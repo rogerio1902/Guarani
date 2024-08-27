@@ -77,21 +77,21 @@ uses UDM, UMenu, UCadCli, UCadPro, UPesq;
 
 procedure TFrmMovPed.Habilitar;
 begin
-  BBtnGravar.  Enabled := Trim(DBEdtCli.Text) <> '';
-  BBtnCancelar.Enabled := BBtnGravar.Enabled;
-  with DM.CDSItensPedTmp do
+  with DM do
   begin
-    BBtnConf.   Enabled := (State in [dsInsert, dsEdit]);
-    BBtnNovo.   Enabled := BBtnGravar.Enabled and not BBtnConf.Enabled;
-    BBtnCan.    Enabled := BBtnConf.Enabled;
-    BBtnExcluir.Enabled := RecordCount > 0;
-    LblProd.    Enabled := BBtnGravar.Enabled;
-    DBEdtPro.   Enabled := BBtnGravar.Enabled;
-    SBtnPro.    Enabled := BBtnGravar.Enabled;
-    LblQtde.    Enabled := BBtnGravar.Enabled;
-    DBEdtQtde.  Enabled := BBtnGravar.Enabled;
-    LblPreco.   Enabled := BBtnGravar.Enabled;
-    DBEdtPreco. Enabled := BBtnGravar.Enabled;
+    BBtnGravar.  Enabled := (Trim(DBEdtCli.Text) <> '') and (STxtCli.Caption <> '');
+    BBtnCancelar.Enabled := BBtnGravar.Enabled;
+    BBtnConf.    Enabled := (CDSItensPedTmp.State in [dsInsert, dsEdit]);
+    BBtnNovo.    Enabled := BBtnGravar.Enabled and not BBtnConf.Enabled;
+    BBtnCan.     Enabled := BBtnConf.Enabled;
+    BBtnExcluir. Enabled := CDSItensPedTmp.RecordCount > 0;
+    LblProd.     Enabled := BBtnGravar.Enabled;
+    DBEdtPro.    Enabled := BBtnGravar.Enabled;
+    SBtnPro.     Enabled := BBtnGravar.Enabled;
+    LblQtde.     Enabled := BBtnGravar.Enabled;
+    DBEdtQtde.   Enabled := BBtnGravar.Enabled;
+    LblPreco.    Enabled := BBtnGravar.Enabled;
+    DBEdtPreco.  Enabled := BBtnGravar.Enabled;
   end;
 end;
 
@@ -250,7 +250,7 @@ end;
 procedure TFrmMovPed.FormResize(Sender: TObject);
 begin
   // Redimensiona colunas conforme redimensiona o form
-  DBGrdVnd.Columns[1].Width := Width - 430;
+  DBGrdVnd.Columns[1].Width := Width - 485;
 end;
 
 procedure TFrmMovPed.FormShow(Sender: TObject);

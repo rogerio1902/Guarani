@@ -63,7 +63,7 @@ object DM: TDM
     Left = 24
     Top = 16
     Bitmap = {
-      494C010108008001D80010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010108008001DC0010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000003000000001002000000000000030
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -665,5 +665,40 @@ object DM: TDM
     AfterPost = SDSAfterPost
     Left = 256
     Top = 352
+  end
+  object DSProdMais: TDataSource
+    DataSet = SDSProdMais
+    OnStateChange = DSMarcasStateChange
+    Left = 360
+    Top = 400
+  end
+  object SDSProdMais: TSimpleDataSet
+    Aggregates = <>
+    Connection = SQLConnection
+    DataSet.CommandText = 
+      'SELECT FIRST 2'#13#10'  P.Id,'#13#10'  P.Descricao AS "DESCRI'#199#195'O",'#13#10'  M.Desc' +
+      'ricao AS MARCA,'#13#10'  Sum(I.Quantidade) AS QUANTIDADE'#13#10'FROM ItensPe' +
+      'didos I'#13#10'LEFT JOIN Pedidos R ON R.Id = I.PedId'#13#10'LEFT JOIN Produt' +
+      'os P ON P.Id = I.ProId'#13#10'LEFT JOIN Marcas M ON M.Id = P.MarId'#13#10'WH' +
+      'ERE Cast(R.DataPedido AS DATE) BETWEEN :D1 AND :D2'#13#10'GROUP BY 1, ' +
+      '2, 3'#13#10'ORDER BY QUANTIDADE DESC'
+    DataSet.MaxBlobSize = -1
+    DataSet.Params = <
+      item
+        DataType = ftDate
+        Name = 'D1'
+        ParamType = ptInput
+        Value = 0d
+      end
+      item
+        DataType = ftDate
+        Name = 'D2'
+        ParamType = ptInput
+        Value = 0d
+      end>
+    Params = <>
+    AfterPost = SDSAfterPost
+    Left = 256
+    Top = 400
   end
 end
