@@ -76,22 +76,31 @@ implementation
 uses UDM, UMenu, UCadCli, UCadPro, UPesq;
 
 procedure TFrmMovPed.Habilitar;
+var
+  CliValido,
+  ProValido,
+  GridVazia,
+  GridEditando: Boolean;
 begin
   with DM do
   begin
-    BBtnGravar.  Enabled := (Trim(DBEdtCli.Text) <> '') and (STxtCli.Caption <> '');
-    BBtnCancelar.Enabled := BBtnGravar.Enabled;
-    BBtnConf.    Enabled := (CDSItensPedTmp.State in [dsInsert, dsEdit]);
-    BBtnNovo.    Enabled := BBtnGravar.Enabled and not BBtnConf.Enabled;
-    BBtnCan.     Enabled := BBtnConf.Enabled;
-    BBtnExcluir. Enabled := CDSItensPedTmp.RecordCount > 0;
-    LblProd.     Enabled := BBtnGravar.Enabled;
-    DBEdtPro.    Enabled := BBtnGravar.Enabled;
-    SBtnPro.     Enabled := BBtnGravar.Enabled;
-    LblQtde.     Enabled := BBtnGravar.Enabled;
-    DBEdtQtde.   Enabled := BBtnGravar.Enabled;
-    LblPreco.    Enabled := BBtnGravar.Enabled;
-    DBEdtPreco.  Enabled := BBtnGravar.Enabled;
+    CliValido            := (Trim(DBEdtCli.Text) <> '') and (STxtCli.Caption <> '');
+    ProValido            := (Trim(DBEdtPro.Text) <> '') and (STxtPro.Caption <> '');
+    GridVazia            := CDSItensPedTmp.RecordCount = 0;
+    GridEditando         := CDSItensPedTmp.State in [dsInsert, dsEdit];
+    BBtnGravar.  Enabled := CliValido and not GridVazia;
+    BBtnCancelar.Enabled := CliValido;
+    BBtnCan.     Enabled := GridEditando;
+    BBtnNovo.    Enabled := CliValido and (not GridEditando);
+    BBtnConf.    Enabled := ProValido and GridEditando;
+    BBtnExcluir. Enabled := (not GridEditando) and (not GridVazia);
+    LblProd.     Enabled := GridEditando;
+    DBEdtPro.    Enabled := GridEditando;
+    SBtnPro.     Enabled := GridEditando;
+    LblQtde.     Enabled := ProValido;
+    DBEdtQtde.   Enabled := ProValido;
+    LblPreco.    Enabled := ProValido;
+    DBEdtPreco.  Enabled := ProValido;
   end;
 end;
 
@@ -155,9 +164,9 @@ begin
   if Application.MessageBox('Tem certeza que deseja cancelar?', 'Confirmação', mb_YesNo + mb_IconQuestion + mb_DefButton2) = mrYes then
     with DM.CDSItensPedTmp do
     begin
-      ValorTotal := ValorTotal - FieldByName('CDSItensVendaTotalAnt').AsFloat;
+      ValorTotal := ValorTotal - FieldByName('TotalAnt').AsFloat;
       Cancel;
-      ValorTotal := ValorTotal + FieldByName('CDSItensVendaTotal').AsFloat;
+      ValorTotal := ValorTotal + FieldByName('Total').AsFloat;
       Habilitar;
     end;
 end;
@@ -214,12 +223,12 @@ begin
     end;
   end;
   Reiniciar;
-  // Data: [UpperCase(FormatDateTime('dddd, dd "DE" mmmm "DE" yyyy "ÀS" hh:mm:ss', <frxDBDSPed."DATAPEDIDO">))]
 end;
 
 procedure TFrmMovPed.BBtnNovoClick(Sender: TObject);
 begin
   DM.CDSItensPedTmp.Append;
+  Habilitar;
   DBEdtPro.SetFocus;
 end;
 
